@@ -122,6 +122,7 @@ if (typeof J$ === 'undefined') {
 
         var prefix = 'if (typeof J$ === "undefined") {\n';
         prefix += " acorn = require('"+path.resolve(__dirname, "./../../../node_modules/acorn/dist/acorn.js")+"');\n";
+        prefix += " babel = require('"+path.resolve(__dirname, "./../../../node_modules/babel-core/index.js")+"');\n";
         prefix += " esotope = require('"+path.resolve(__dirname, "./../../../node_modules/esotope/esotope.js")+"');\n";
         require('../headers').headerSources.forEach(function (header) {
             prefix += " require('"+path.resolve(__dirname, "./../../../" + header)+"');\n";
