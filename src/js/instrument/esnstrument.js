@@ -20,7 +20,7 @@
 // JALANGI DO NOT INSTRUMENT
 
 /*jslint node: true browser: true */
-/*global astUtil acorn esotope J$ */
+/*global babel astUtil acorn esotope J$ */
 
 //var StatCollector = require('../utils/StatCollector');
 if (typeof J$ === 'undefined') {
