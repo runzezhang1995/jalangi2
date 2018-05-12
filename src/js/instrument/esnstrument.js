@@ -27,6 +27,11 @@ if (typeof J$ === 'undefined') {
     J$ = {};
 }
 
+function es6Transform(code) {
+    require('babel-core').transform(code, {
+        presets: ['babel-preset-es2015']
+    }).code;
+}
 
 (function (sandbox) {
     if (typeof sandbox.instrumentCode !== 'undefined') {
@@ -278,7 +283,7 @@ if (typeof J$ === 'undefined') {
             }
         };
 //        StatCollector.resumeTimer("internalParse");
-        var ast = acorn.parse(code);
+        var ast = acorn.parse(es6Transform(code));
 //        StatCollector.suspendTimer("internalParse");
 //        StatCollector.resumeTimer("replace");
         var newAst = astUtil.transformAst(ast, visitorReplaceInExpr, undefined, undefined, true);
@@ -1860,7 +1865,7 @@ if (typeof J$ === 'undefined') {
 //         StatCollector.resumeTimer("parse");
 //        console.time("parse")
 //        var newAst = esprima.parse(code, {loc:true, range:true});
-        var newAst = acorn.parse(code, {locations: true, ecmaVersion: 6 });
+        var newAst = acorn.parse(es6Transform(code), {locations: true, ecmaVersion: 6 });
 //        console.timeEnd("parse")
 //        StatCollector.suspendTimer("parse");
 //        StatCollector.resumeTimer("transform");
