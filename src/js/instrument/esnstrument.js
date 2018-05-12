@@ -28,7 +28,8 @@ if (typeof J$ === 'undefined') {
 }
 
 function es6Transform(code) {
-    require('babel-core').transform(code, {
+    const babel = require('babel-core');
+    return babel.transform(code, {
         presets: ['babel-preset-es2015']
     }).code;
 }
