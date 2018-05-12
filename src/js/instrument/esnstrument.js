@@ -33,7 +33,7 @@ if (typeof J$ === 'undefined') {
         return;
     }
 
-    babel.transform('', { presets: ['babel-preset-es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
+    //babel.transform('', { presets: ['babel-preset-es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
 
 
 
