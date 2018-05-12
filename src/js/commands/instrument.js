@@ -27,6 +27,7 @@ if (typeof J$ === 'undefined') {
 
     acorn = require("acorn");
     babel = require("babel-core");
+    babel.transform('', { presets: ['babel-preset-es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
     esotope = require("esotope");
     require('../headers').headerSources.forEach(function (header) {
         require("./../../../" + header);
