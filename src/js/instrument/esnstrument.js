@@ -2006,6 +2006,7 @@ if (typeof J$ === 'undefined') {
 
 // exports J$.instrumentCode
 // exports J$.instrumentEvalCode
+// depends on babel
 // depends on acorn
 // depends on esotope
 // depends on J$.Constants
