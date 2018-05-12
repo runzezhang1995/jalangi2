@@ -27,18 +27,20 @@ if (typeof J$ === 'undefined') {
     J$ = {};
 }
 
-const babel = require('babel-core');
-babel.transform('', { presets: ['babel-preset-es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
-
-function es6Transform(code) {
-    return babel.transform(code, {
-        presets: ['babel-preset-es2015']
-    }).code;
-}
-
 (function (sandbox) {
+
     if (typeof sandbox.instrumentCode !== 'undefined') {
         return;
+    }
+
+    //babel.transform('', { presets: ['babel-preset-es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
+
+
+
+    function es6Transform(code) {
+        return babel.transform(code, {
+            presets: ['babel-preset-es2015']
+        }).code;
     }
 
     var global = this;

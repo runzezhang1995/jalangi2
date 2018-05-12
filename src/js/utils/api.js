@@ -25,6 +25,7 @@ require('./../instrument/astUtil.js');
 require('./../instrument/esnstrument.js');
 // TODO making globals here is kind of gross, but esnstrument relies on it
 acorn = require('acorn');
+babel = require('babel-core');
 esotope = require('esotope');
 
 var path = require('path');
