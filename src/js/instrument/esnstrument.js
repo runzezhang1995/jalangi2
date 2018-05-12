@@ -27,8 +27,10 @@ if (typeof J$ === 'undefined') {
     J$ = {};
 }
 
+const babel = require('babel-core');
+babel.transform('', { presets: ['babel-preset-es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
+
 function es6Transform(code) {
-    const babel = require('babel-core');
     return babel.transform(code, {
         presets: ['babel-preset-es2015']
     }).code;
@@ -284,7 +286,7 @@ function es6Transform(code) {
             }
         };
 //        StatCollector.resumeTimer("internalParse");
-        var ast = acorn.parse(es6Transform(code));
+        var ast = acorn.parse(code);
 //        StatCollector.suspendTimer("internalParse");
 //        StatCollector.resumeTimer("replace");
         var newAst = astUtil.transformAst(ast, visitorReplaceInExpr, undefined, undefined, true);
