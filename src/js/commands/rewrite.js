@@ -34,11 +34,12 @@ parser.addArgument(['inputFiles'], {
 const args = parser.parseArgs();
 
 const options = {
+    code: '' + fs.readFileSync(args.inputFiles[0]),
     isEval: false,
     origCodeFileName: args.inputFiles[0],
     instCodeFileName: args.inputFiles[1],
     inlineSourceMap: true,
-    inlineSource: false
+    inlineSource: true
 };
 
 const instResult = J$.instrumentCode(options);
