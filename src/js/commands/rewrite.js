@@ -36,7 +36,7 @@ const args = parser.parseArgs();
 const options = {
     isEval: false,
     origCodeFileName: args.inputFiles[0],
-    instCodeFileName: args.inputFiles[0].replace(/.js$/, '_jalangi_.js'),
+    instCodeFileName: args.inputFiles[1],
     inlineSourceMap: true,
     inlineSource: false
 };
@@ -48,5 +48,5 @@ if (!instResult) {
 }
 
 const instrumentedCode = instUtil.applyASTHandler(instResult, null, J$);
-fs.writeFileSync(options.origCodeFileName.replace(/.js$/, "_jalangi_.json"), instResult.sourceMapString, "utf8");
+fs.writeFileSync(args.inputFiles[1], instResult.sourceMapString, "utf8");
 fs.writeFileSync(options.instCodeFileName, instrumentedCode, "utf8");
