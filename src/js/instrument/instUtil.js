@@ -45,6 +45,26 @@ function setHeaders() {
     }
 }
 
+function getScriptsToLoad(analyses, initParams, extraAppScripts, EXTRA_SCRIPTS_DIR, jalangiRoot) {
+    let scriptsSource = [];
+
+    let allSources = (
+            headerSources
+                .map(src => path.join(jalangiRoot, src))
+        ).concat(analyses)
+        .concat(
+            extraAppScripts
+                .map(src => path.join(EXTRA_SCRIPTS_DIR, path.basename(src)))
+        );
+
+    allSources.forEach(src => {
+        src = path.resolve(src);
+        scriptsSource.push(fs.readFileSync(src));
+    });
+
+    return scriptsSource;
+}
+
 
 function getInlinedScripts(analyses, initParams, extraAppScripts, EXTRA_SCRIPTS_DIR, jalangiRoot, cdn) {
     if (!headerCode) {
@@ -207,4 +227,5 @@ exports.isInlineScript = isInlineScript;
 exports.headerSources = headerSources;
 exports.createFilenameForScript = createFilenameForScript;
 exports.getInlinedScripts = getInlinedScripts;
+exports.getScriptsToLoad = getScriptsToLoad;
 exports.getFooterString = getFooterString;
