@@ -48,5 +48,5 @@ if (!instResult) {
 }
 
 const instrumentedCode = instUtil.applyASTHandler(instResult, null, J$);
-fs.writeFileSync(args.inputFiles[1], instResult.sourceMapString, "utf8");
-fs.writeFileSync(options.instCodeFileName, instrumentedCode, "utf8");
+fs.writeFileSync(args.inputFiles[1].replace(/.js$/, ".json"), instResult.sourceMapString, "utf8");
+fs.writeFileSync(args.inputFiles[1], instrumentedCode, "utf8");
