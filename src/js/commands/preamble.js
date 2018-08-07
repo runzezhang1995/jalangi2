@@ -34,11 +34,6 @@ parser.addArgument(['--extra_app_scripts'], {
     help: "list of extra application scripts to be injected and instrumented, separated by path.delimiter" 
 });
 
-parser.addArgument(['inputFiles'], {
-    help: "either a list of JavaScript files to instrument, or a single directory under which all JavaScript and HTML files should be instrumented (modulo the --no_html and --exclude flags)",
-    nargs: '+'
-});
-
 const options = parser.parseArgs();
 
 instUtil.setHeaders();

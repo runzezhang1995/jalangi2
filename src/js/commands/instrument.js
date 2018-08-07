@@ -260,7 +260,6 @@ if (typeof J$ === 'undefined') {
 
         InstrumentJSStream.prototype._transform = accumulateData;
 
-
         function writeMetadataToFile(metadata, path) {
             var fd = fs.openSync(path, 'w');
             fs.writeSync(fd, "{\n");
