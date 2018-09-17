@@ -11,16 +11,15 @@ from mitmproxy.script import concurrent
 
 from subprocess import CalledProcessError, Popen, PIPE, STDOUT
 
-filename = inspect.getframeinfo(inspect.currentframe()).filename
-JALANGI_HOME = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(filename)), os.pardir))
+JALANGI_HOME = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(inspect.getframeinfo(inspect.currentframe()).filename
+)), os.pardir))
 WORKING_DIR = os.getcwd()
 
 sys.path.insert(0, JALANGI_HOME+'/scripts')
 
-print('Jalangi home is ' + JALANGI_HOME)
-print('Current working directory is ' + WORKING_DIR)
-
-jalangiArgs = ''
+def start():
+    print('Jalangi home is ' + JALANGI_HOME)
+    print('Current working directory is ' + WORKING_DIR)
 
 def load(l):
     l.add_option('args', str, "", "Jalangi2 Arguments")

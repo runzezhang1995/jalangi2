@@ -12,15 +12,6 @@ import time
 from subprocess import Popen, PIPE
 import webbrowser
 
-def mkempty(f):
-    """
-    Create f as an empty file
-    """
-    open(f, 'w').close() 
-
-def find_node():
-    return "node"
-
 def encode_input(input):
     if input.startswith(codecs.BOM_UTF16):
         return input.decode('utf-16').encode('utf-8')
@@ -33,7 +24,7 @@ def encode_input(input):
 def execute_return(script, **kwargs):
     """Execute script and returns output string"""
     saveStdErr = kwargs['savestderr'] if 'savestderr' in kwargs else False
-    cmd = [find_node()] + script.split()
+    cmd = ["node"] + script.split()
     print(' '.join(cmd))
     with NamedTemporaryFile() as f:
          try:
@@ -87,15 +78,10 @@ def execute_np(script, *args):
     return subprocess.call(cmd)
 
 WORKING_DIR = os.getcwd()
-    
 JALANGI_HOME = os.path.abspath(os.path.join(os.path.dirname(__file__),os.pardir))
-
 INSTRUMENTATION_SCRIPT = JALANGI_HOME + "/src/js/commands/esnstrument_cli.js"
-
 INST_DIR_SCRIPT = JALANGI_HOME + "/src/js/commands/instrument.js"
-
 ANALYSIS_SCRIPT = JALANGI_HOME + "/src/js/commands/direct.js"
-
 JALANGI_SCRIPT = JALANGI_HOME + "/src/js/commands/jalangi.js"
 
 
