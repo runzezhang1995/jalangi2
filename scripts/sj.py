@@ -18,30 +18,8 @@ def mkempty(f):
     """
     open(f, 'w').close() 
 
-def is_node_exe(path):
-    try:
-        subprocess.check_output([path,"-e","42"])
-        return True
-    except: return False
-
-
 def find_node():
-    try:
-        return find_node.mem
-    except: pass
-    LOCATIONS = [os.environ.get("NODE_EXECUTABLE"),
-                 "node",
-                 "/usr/bin/node",
-                 "/usr/local/bin/node",
-                 "C:/Program Files/nodejs/node.exe",
-                 "C:/Program Files (x86)/nodejs/node.exe"]
-    l = filter(is_node_exe, LOCATIONS)
-    if len(l) == 0:
-        print('Could not find the node.js executable. node.js is required for Jalangi')
-        print('If you have installed node.js in a non-standard location you can set environment variable NODE_EXECUTABLE to the full path of the node executable.')
-        exit(1)
-    find_node.mem = l[0]
-    return l[0]
+    return "node"
 
 def encode_input(input):
     if input.startswith(codecs.BOM_UTF16):
@@ -84,11 +62,16 @@ def execute_return_np(script, **kwargs):
 def execute(script, stdin=None, env=None, quiet=False):
     """Execute script and print output"""
     try:
-        cmd = [find_node()] + script.split()
+        cmd = [find_node()] + script.split(' ')
         sub_env = os.environ.copy()
-        if (env):
+
+        print("Cmd", str(cmd))
+
+        if env:
             for key in env.keys():
-                sub_env[key] = env[key]
+                if key != None:
+                    sub_env[key] = env[key]
+
         print(' '.join(cmd))
         p = Popen(cmd, env=sub_env, stdin=PIPE, stdout=PIPE, stderr=subprocess.STDOUT)
         stdout = p.communicate(input=encode_input(stdin) if stdin else None)[0]
