@@ -5,19 +5,9 @@ import sys
 import inspect
 import traceback
 
-from distutils.version import LooseVersion
-
 from subprocess import CalledProcessError, Popen, PIPE, STDOUT
-
-p = Popen(['mitmdump --version'], stdout=PIPE, stdin=PIPE, stderr=STDOUT, shell=True)
-stdout = p.communicate()[0]
-mitmversion = stdout.decode()[9:] # remove "mitmdump "
-
-
-if LooseVersion(mitmversion) >= LooseVersion("0.17"):
-    from mitmproxy.script import concurrent
-else:
-    from libmproxy.script import concurrent
+from mitmproxy.script import concurrent
+from distutils.version import LooseVersion
 
 filename = inspect.getframeinfo(inspect.currentframe()).filename
 JALANGI_HOME = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(filename)), os.pardir))
@@ -61,12 +51,8 @@ def processFile (flow, content, ext):
         print(''.join(lines))
         return content
 
-if LooseVersion(mitmversion) >= LooseVersion("0.18"):
-    def start():
-        _start(sys.argv)
-else:
-    def start(context, argv):
-        _start(argv)
+def start():
+    _start(sys.argv)
 
 # Example usage: "proxy.py --no-cache --ignore http://cdn.com/jalangi --inlineIID --inlineSource --noResultsGUI --analysis ..."
 def _start(argv):
@@ -95,14 +81,9 @@ def _start(argv):
         return path if not p.startswith('--') and (os.path.isfile(path) or os.path.isdir(path)) else p
     jalangiArgs = ' '.join(map(mapper, [x for x in argv[1:]]))
 
-if LooseVersion(mitmversion) >= LooseVersion("0.18"):
-    @concurrent
-    def response(flow):
-        _response(flow)
-else:
-    @concurrent
-    def response(context, flow):
-        _response(flow)
+@concurrent
+def response(flow):
+    _response(flow)
 
 def _response(flow):
     # Do not invoke jalangi if the domain is ignored
@@ -112,7 +93,7 @@ def _response(flow):
 
     # Do not invoke jalangi if the requested URL contains the query parameter noInstr
     # (e.g. https://cdn.com/jalangi/jalangi.min.js?noInstr=true)
-    if LooseVersion(mitmversion) >= LooseVersion("0.17") and flow.request.query and flow.request.query.get('noInstr', None):
+    if flow.request.query and flow.request.query.get('noInstr', None):
         return
 
     try:
@@ -122,10 +103,7 @@ def _response(flow):
         csp_key = None
         for key in flow.response.headers.keys():
             if key.lower() == "content-type":
-                if LooseVersion(mitmversion) >= LooseVersion("0.17"):
-                    content_type = flow.response.headers[key].lower()
-                else:
-                    content_type = flow.response.headers[key][0].lower()
+                content_type = flow.response.headers[key].lower()
             elif key.lower() == "content-security-policy":
                 csp_key = key
 
@@ -137,10 +115,7 @@ def _response(flow):
 
         # Disable the content security policy since it may prevent jalangi from executing
         if csp_key:
-            if LooseVersion(mitmversion) >= LooseVersion("0.17"):
-                flow.response.headers.pop(csp_key, None)
-            else:
-                flow.response.headers[csp_key] = None
+            flow.response.headers.pop(csp_key, None)
     except:
         print('Exception in response() @ proxy.py')
         exc_type, exc_value, exc_traceback = sys.exc_info()

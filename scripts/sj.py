@@ -95,7 +95,7 @@ def execute(script, stdin=None, env=None, quiet=False):
         if not quiet:
             print(stdout)
         return stdout
-    except subprocess.CalledProcessError, e:
+    except subprocess.CalledProcessError as e:
         print(e.output)
 
 def execute_np(script, *args):
