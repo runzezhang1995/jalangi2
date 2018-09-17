@@ -39,7 +39,7 @@ def execute_return(script, **kwargs):
 def execute_return_np(script, **kwargs):
     """Execute script and returns output string"""
     saveStdErr = kwargs['savestderr'] if 'savestderr' in kwargs else False
-    cmd = [find_node()] + script.split()
+    cmd = ["node"] + script.split()
     with NamedTemporaryFile() as f:
          try:
              subprocess.check_call(cmd,stdout=f,
@@ -53,7 +53,7 @@ def execute_return_np(script, **kwargs):
 def execute(script, stdin=None, env=None, quiet=False):
     """Execute script and print output"""
     try:
-        cmd = [find_node()] + script.split(' ')
+        cmd = ["node"] + script.split(' ')
         sub_env = os.environ.copy()
 
         print("Cmd", str(cmd))
@@ -74,7 +74,7 @@ def execute(script, stdin=None, env=None, quiet=False):
 
 def execute_np(script, *args):
     """Execute script and print output"""
-    cmd = [find_node()] + script.split()
+    cmd = ["node"] + script.split()
     return subprocess.call(cmd)
 
 WORKING_DIR = os.getcwd()
