@@ -35,10 +35,9 @@ if (typeof J$ === 'undefined') {
 
     //babel.transform('', { presets: ['babel-preset-es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
 
-
-
     function es6Transform(code) {
         return babel.transform(code, {
+            retainLines: true,
             presets: ['babel-preset-es2015']
         }).code;
     }
