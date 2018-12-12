@@ -39,7 +39,7 @@ if (typeof J$ === 'undefined') {
         return babel.transform(code, {
             retainLines: true,
             presets: ['babel-preset-es2015']
-        }).code;
+        }).code.replace(/^'use strict';\n?/, '');
     }
 
     var global = this;
