@@ -36,10 +36,20 @@ if (typeof J$ === 'undefined') {
     //babel.transform('', { presets: ['babel-preset-es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
 
     function es6Transform(code) {
-        return babel.transform(code, {
-            retainLines: true,
-            presets: ['babel-preset-es2015']
-        }).code.replace(/^'use strict';\n?/, '');
+	if (!process.env['NO_ES7']) {
+		var res = babel.transform(code, {
+		    retainLines: true,
+		    presets: ['babel-preset-es2015']
+		}).code; 
+
+		if (!code.includes('use strict')) {
+			res = res.replace(/.use strict.;\n?/, '');
+		}
+
+		return res;
+	} else {
+		return code;
+	}
     }
 
     var global = this;
