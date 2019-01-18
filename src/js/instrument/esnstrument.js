@@ -42,7 +42,7 @@ if (typeof J$ === 'undefined') {
 		    presets: ['babel-preset-es2015']
 		}).code; 
 
-		if (!code.includes('use strict')) {
+		if (res && res.indexOf('use strict') != -1) {
 			res = res.replace(/.use strict.;\n?/, '');
 		}
 
