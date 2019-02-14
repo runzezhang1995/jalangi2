@@ -68,8 +68,12 @@ function makeSMapFileName(name) {
 }
 
 acorn = require("acorn");
-babel = require('babel-core');
-babel.transform('', { presets: ['babel-preset-es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
+
+try {
+  babel = require('babel-core');
+  babel.transform('', { presets: ['babel-preset-es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
+} catch (e) {}
+
 esotope = require("esotope");
 require('../headers').headerSources.forEach(function (header) {
     require("./../../../" + header);

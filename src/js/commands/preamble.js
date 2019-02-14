@@ -1,7 +1,11 @@
 /** Preamble generates a Jalangi2 preamble given a set of analysis **/
 
 const acorn = require("acorn");
+
+try {
 const babel = require("babel-core");
+} catch (e) {}
+
 const fs = require("fs");
 const path = require("path");
 const instUtil = require("../instrument/instUtil");

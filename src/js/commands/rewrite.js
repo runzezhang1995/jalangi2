@@ -2,7 +2,12 @@
 
 const esotope = require("esotope");
 const acorn = require("acorn");
-const babel = require("babel-core");
+
+var babel;
+try {
+  babel = require("babel-core");
+} catch (e) {}
+
 const fs = require("fs");
 const path = require("path");
 const instUtil = require("../instrument/instUtil");
