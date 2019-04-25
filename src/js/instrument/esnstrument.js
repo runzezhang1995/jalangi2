@@ -34,20 +34,19 @@ if (typeof J$ === 'undefined') {
     }
 
     function es6Transform(code) {
-	if (typeof(babel) !== 'undefined' && !process.env['NO_ES7']) {
-		var res = babel.transform(code, {
-		    retainLines: true,
-		    presets: ['babel-preset-es2015']
-		}).code; 
+	    if (typeof(babel) !== 'undefined' && !process.env['NO_ES7']) {
+		    var res = babel.transform(code, {
+		      retainLines: true,
+		      presets: ['babel-preset-es2015']
+		    }).code; 
 
-		if (res && res.indexOf('use strict') != -1) {
-			res = res.replace(/.use strict.;\n?/, '');
-		}
-
-		return res;
-	} else {
-		return code;
-	}
+		    if (res && res.indexOf('use strict') != -1) {
+			    res = res.replace(/.use strict.;\n?/, '');
+		    }
+		    return res;
+	    } else {
+		    return code;
+	    }
     }
 
     var global = this;
