@@ -37,7 +37,7 @@ if (typeof J$ === 'undefined') {
 	    if (typeof(babel) !== 'undefined' && !process.env['NO_ES7']) {
 		    var res = babel.transform(code, {
 		      retainLines: true,
-		      presets: ['@babel/preset-es2017']
+		      presets: ['@babel/preset-env']
 		    }).code; 
 
 		    if (res && res.indexOf('use strict') != -1) {
