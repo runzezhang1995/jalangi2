@@ -1876,7 +1876,7 @@ if (typeof J$ === 'undefined') {
 //         StatCollector.resumeTimer("parse");
 //        console.time("parse")
 //        var newAst = esprima.parse(code, {loc:true, range:true});
-        var newAst = acorn.parse(es6Transform(code), {locations: true, ecmaVersion: 6 });
+        var newAst = acorn.parse(es6Transform(code), {locations: true, allowReturnOutsideFunction: true, ecmaVersion: 6 });
 //        console.timeEnd("parse")
 //        StatCollector.suspendTimer("parse");
 //        StatCollector.resumeTimer("transform");
@@ -1961,7 +1961,7 @@ if (typeof J$ === 'undefined') {
                 // post-process AST to hoist function declarations (required for Firefox)
                 var hoistedFcts = [];
                 newAst = hoistFunctionDeclaration(newAst, hoistedFcts);
-                var newCode = esotope.generate(newAst, {comment: true ,parse: acorn.parse});
+                var newCode = esotope.generate(newAst, {comment: true , parse: acorn.parse});
                 code = newCode + "\n" + noInstr + "\n";
             } catch(ex) {
                 console.log("Failed to instrument", code);
