@@ -34,10 +34,11 @@ if (typeof J$ === 'undefined') {
     }
 
     function es6Transform(code) {
+        console.log('Transforming');
 	    if (typeof(babel) !== 'undefined' && !process.env['NO_ES7']) {
-		    var res = babel.transformSync(code, {
+		    var res = babel.transform(code, {
 		      retainLines: true,
-		      presets: ['@babel/preset-env']
+		      presets: ['es2017']
 		    }).code; 
 
 		    if (res && res.indexOf('use strict') != -1) {
@@ -45,7 +46,7 @@ if (typeof J$ === 'undefined') {
 		    }
 		    return res;
 	    } else {
-        console.log('There is no babel loaded');
+            console.log('There is no babel loaded');
 		    return code;
 	    }
     }

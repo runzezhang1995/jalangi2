@@ -27,8 +27,8 @@ require('./../instrument/esnstrument.js');
 acorn = require('acorn');
 
 try {
-babel = require('@babel/core');
-babel.transformSync('', { presets: ['@babel/preset-env'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
+babel = require('babel-core');
+babel.transform('', { presets: ['es2017'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
 } catch (e) {}
 
 esotope = require('esotope');
