@@ -35,7 +35,7 @@ if (typeof J$ === 'undefined') {
 
     function es6Transform(code) {
 	    if (typeof(babel) !== 'undefined' && !process.env['NO_ES7']) {
-		    var res = babel.transform(code, {
+		    var res = babel.transformSync(code, {
 		      retainLines: true,
 		      presets: ['@babel/preset-env']
 		    }).code; 
@@ -45,6 +45,7 @@ if (typeof J$ === 'undefined') {
 		    }
 		    return res;
 	    } else {
+        console.log('There is no babel loaded');
 		    return code;
 	    }
     }
