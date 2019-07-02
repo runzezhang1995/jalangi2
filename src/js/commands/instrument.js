@@ -29,7 +29,7 @@ if (typeof J$ === 'undefined') {
     
     try {
     babel = require("babel-core");
-    babel.transform('', { presets: ['es2017', 'es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
+    babel.transform('', { presets: ['es2015'] }); /* Precaches all dependencies o they dont get jalangi eval'd */
     } catch (e) {}
     esotope = require("esotope");
     require('../headers').headerSources.forEach(function (header) {
