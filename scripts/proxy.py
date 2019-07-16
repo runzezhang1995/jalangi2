@@ -33,8 +33,9 @@ def processFile (flow, content, ext):
         name = os.path.splitext(flow.request.path_components[-1])[0] if hasattr(flow.request,'path_components') and len(flow.request.path_components) else 'index'
 
         hash = hashlib.md5(content.encode('utf-8')).hexdigest()
-        fileName = 'cache/' + flow.request.host + '/' + hash + '/' + name + '.' + ext
-        instrumentedFileName = 'cache/' + flow.request.host + '/' + hash + '/' + name + '_jalangi_.' + ext
+        baseName = 'cache/' + flow.request.host + '/' + hash + '/' + hashlib.md5(name).hexdigest()
+        fileName = baseName + '.' + ext
+        instrumentedFileName = baseName + '_jalangi_.' + ext
         
         if not os.path.exists('cache/' + flow.request.host + '/' + hash):
             os.makedirs('cache/' + flow.request.host + '/' + hash)
