@@ -33,7 +33,7 @@ def processFile (flow, content, ext):
         name = os.path.splitext(flow.request.path_components[-1])[0] if hasattr(flow.request,'path_components') and len(flow.request.path_components) else 'index'
 
         hash = hashlib.md5(content.encode('utf-8')).hexdigest()
-        baseName = 'cache/' + flow.request.host + '/' + hash + '/' + hashlib.md5(name).hexdigest()
+        baseName = 'cache/' + flow.request.host + '/' + hash + '/' + hashlib.md5(name.encode('utf-8')).hexdigest()
         fileName = baseName + '.' + ext
         instrumentedFileName = baseName + '_jalangi_.' + ext
         
