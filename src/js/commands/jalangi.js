@@ -28,27 +28,37 @@ var parser = new argparse.ArgumentParser({
     addHelp: true,
     description: "Command-line utility to perform Jalangi2's instrumentation and analysis"
 });
-parser.addArgument(['--analysis'], {help: "absolute path to analysis file to run", action: 'append'});
-parser.addArgument(['--initParam'], { help: "initialization parameter for analysis, specified as key:value", action:'append'});
-parser.addArgument(['--inlineIID'], {help: "Inline IID to (beginLineNo, beginColNo, endLineNo, endColNo) in J$.iids in the instrumented file", action: 'storeTrue'});
-parser.addArgument(['--inlineSource'], {help: "Inline original source as string in J$.iids.code in the instrumented file", action: 'storeTrue'});
-parser.addArgument(['--astHandlerModule'], {help: "Path to a node module that exports a function to be used for additional AST handling after instrumentation"});
+parser.addArgument(['--analysis', '-a'], {help: "absolute path to analysis file to run", action: 'append'});
+parser.addArgument(['--initParam', '-p'], { help: "initialization parameter for analysis, specified as key:value", action:'append'});
+parser.addArgument(['--inlineIID', '-iid'], {help: "Inline IID to (beginLineNo, beginColNo, endLineNo, endColNo) in J$.iids in the instrumented file", action: 'storeTrue'});
+parser.addArgument(['--inlineSource', '-is'], {help: "Inline original source as string in J$.iids.code in the instrumented file", action: 'storeTrue'});
+parser.addArgument(['--astHandlerModule', '-ast'], {help: "Path to a node module that exports a function to be used for additional AST handling after instrumentation"});
 parser.addArgument(['script_and_args'], {
     help: "script to record and CLI arguments for that script",
     nargs: argparse.Const.REMAINDER
 });
+parser.addArgument(['--folderExceptFromInstrument', '-e'], {help: "Path to folders that to be ignored from instrumentation", action: 'append'})
+
 var args = parser.parseArgs();
+var path = require('path');
 var astHandler = null;
 if (args.astHandlerModule) {
     astHandler = require(args.astHandlerModule);
 }
 
-
-
 if (args.script_and_args.length === 0) {
     console.error("must provide script to record");
     process.exit(1);
 }
+
+// enable jalangji to skip folders that to be instrumented 
+var folderExceptFromInstrument = [];
+if (args.folderExceptFromInstrument != undefined &&  args.folderExceptFromInstrument.length > 0){
+    args.folderExceptFromInstrument.forEach((folder => {
+        folderExceptFromInstrument.push(path.resolve(folder));
+    }));    
+}
+
 // we shift here so we can use the rest of the array later when
 // hacking process.argv; see below
 var script = args.script_and_args.shift();
@@ -97,8 +107,17 @@ if (args.analysis) {
     });
 }
 
-Module._extensions['.js'] = function (module, filename) {
+Module._extensions['.js'] = function (module, filename) {    
     var code = fs.readFileSync(filename, 'utf8');
+
+    // additional check to see if the file is except from in
+    for(var i = 0; i < folderExceptFromInstrument.length; i++){
+        if(filename.indexOf(folderExceptFromInstrument[i]) !== -1){
+            module._compile(code, filename);
+            return;
+        }
+    }
+
     var instFilename = makeInstCodeFileName(filename);
     var instCodeAndData = J$.instrumentCode(
         {
@@ -112,6 +131,7 @@ Module._extensions['.js'] = function (module, filename) {
     instUtil.applyASTHandler(instCodeAndData, astHandler, J$);
     fs.writeFileSync(makeSMapFileName(instFilename), instCodeAndData.sourceMapString, "utf8");
     fs.writeFileSync(instFilename, instCodeAndData.code, "utf8");
+    
     module._compile(instCodeAndData.code, filename);
 };
 
